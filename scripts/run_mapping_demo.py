@@ -34,13 +34,13 @@ def show(obj):
 def main():
     for title, fixture, func in CASES:
         src = json.loads((FIX / fixture).read_text(encoding="utf-8"))
-        print("=" * 70)
+        print()
         print(title)
-        print("-- Источник (Source):")
+        print("Источник (Source):")
         print(show(src))
-        print("-- Приёмник (Target):")
+        print("Приёмник (Target):")
         print(show(func(src)))
-    print("=" * 70)
+    print()
     print("Проверка валидации: телефон '123-45' в кейсе 2")
     bad = json.loads((FIX / "case2_crm_client.json").read_text(encoding="utf-8"))
     bad["phone"] = "123-45"

@@ -147,17 +147,17 @@ public static class AccessControlHandler
              "{\"badgeId\": \"A1B2C3D4\", \"checkpoint_id\": 3, \"eventType\": \"ENTRY\", \"timestamp\": \"2026-09-27T13:00:00Z\"}"),
         };
 
-        Console.WriteLine("=== СКУД: обработка событий прохода (JSON) ===");
+        Console.WriteLine("СКУД: обработка событий прохода (JSON)");
         foreach (var (title, json) in tests)
         {
             Console.WriteLine();
-            Console.WriteLine($"--- {title}");
+            Console.WriteLine(title);
             Console.WriteLine($"    {json}");
             ProcessBadgeScan(json);
         }
 
         Console.WriteLine();
-        Console.WriteLine("=== Бюро пропусков: проверка заявок (XML по XSD) ===");
+        Console.WriteLine("Бюро пропусков: проверка заявок (XML по XSD)");
         string xsd = Path.Combine(baseDir, "schemas", "visitor_pass.xsd");
         ValidateVisitorPass(Path.Combine(baseDir, "samples", "visitor_pass.xml"), xsd);
         ValidateVisitorPass(Path.Combine(baseDir, "samples", "visitor_pass_invalid.xml"), xsd);
