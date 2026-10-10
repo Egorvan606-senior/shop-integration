@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>AccessControl</RootNamespace>
+    <!-- Если на компьютере нет .NET 8, программа запустится на более новой версии -->
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <!-- Схемы и примеры копируются рядом с .exe, чтобы запуск из Visual Studio находил файлы -->
+  <ItemGroup>
+    <None Include="..\schemas\**\*" LinkBase="schemas" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\samples\**\*" LinkBase="samples" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

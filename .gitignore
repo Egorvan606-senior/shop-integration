@@ -13,3 +13,8 @@ venv/
 __pycache__/
 *.pyc
 *.tmp
+
+# Кэш тестов и сборок
+.pytest_cache/
+bin/
+obj/

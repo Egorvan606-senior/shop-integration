@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/skud/badge_event_schema.json",
+  "title": "BadgeEvent",
+  "description": "Событие прохода сотрудника через турникет (СКУД -> сервер мониторинга)",
+  "type": "object",
+  "properties": {
+    "badge_id": {
+      "description": "Уникальный идентификатор RFID-карты: 8 шестнадцатеричных символов",
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{8}$"
+    },
+    "checkpoint_id": {
+      "description": "Номер точки прохода (турникета), целое положительное число",
+      "type": "integer",
+      "minimum": 1
+    },
+    "event_type": {
+      "description": "Направление прохода: ENTRY — вход, EXIT — выход",
+      "type": "string",
+      "enum": ["ENTRY", "EXIT"]
+    },
+    "timestamp": {
+      "description": "Дата и время события по ISO 8601, например 2026-09-27T13:00:00Z",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["badge_id", "checkpoint_id", "event_type", "timestamp"],
+  "additionalProperties": false
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Заявка на гостевой пропуск: проходит проверку по visitor_pass.xsd -->
+<VisitorPassRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:noNamespaceSchemaLocation="../schemas/visitor_pass.xsd">
+  <PassId>GP-2026-000417</PassId>
+  <VisitorName>Смирнова Анна Викторовна</VisitorName>
+  <HostEmployeeId>10582</HostEmployeeId>
+  <ValidUntil>2026-09-27T18:00:00+03:00</ValidUntil>
+</VisitorPassRequest>

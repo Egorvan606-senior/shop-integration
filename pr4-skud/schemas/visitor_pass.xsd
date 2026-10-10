@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XSD-схема заявки на гостевой пропуск (бюро пропусков -> шлюз СКУД) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <!-- ФИО посетителя: обязательная строка не короче 2 символов -->
+  <xs:simpleType name="VisitorNameType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="2"/>
+      <xs:maxLength value="150"/>
+      <xs:whiteSpace value="collapse"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Идентификатор заявки: непустая строка -->
+  <xs:simpleType name="PassIdType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="32"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="VisitorPassRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PassId" type="PassIdType"/>
+        <xs:element name="VisitorName" type="VisitorNameType"/>
+        <xs:element name="HostEmployeeId" type="xs:int"/>
+        <xs:element name="ValidUntil" type="xs:dateTime"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

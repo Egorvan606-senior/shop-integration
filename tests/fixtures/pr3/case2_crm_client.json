@@ -1,0 +1,12 @@
+{
+  "last_name": "  пЕТРОВ ",
+  "first_name": "иван",
+  "middle_name": "сергеевич",
+  "phone": "8 (911) 123-45-67",
+  "birth_date": "15.03.1990",
+  "client_type": "Физлицо",
+  "inn": "780212345678",
+  "email": " IVAN.P@Example.ru ",
+  "balance": 1500.5,
+  "is_active": "Да"
+}
