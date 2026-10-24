@@ -1,0 +1,305 @@
+openapi: 3.0.3
+info:
+  title: Sports Complex Gateway API
+  description: |
+    Интеграционный шлюз АИС «Спортивный комплекс и секции» (вариант 10).
+    Шлюз записи в секции, тренажёрный зал и аренды инвентаря.
+    Контракт спроектирован по подходу Contract-First: клиентское приложение
+    и сервер разрабатываются по этой спецификации.
+  version: 1.0.0
+  contact:
+    name: Иванов Егор Михайлович, группа И14-23-9
+servers:
+  - url: https://api.sport.spbiem.local/v1
+    description: Учебный стенд шлюза спорткомплекса
+tags:
+  - name: Schedule
+    description: Расписание спортивных секций
+  - name: Equipment
+    description: Бронирование спортивного инвентаря
+security:
+  - bearerAuth: []
+
+paths:
+  /sections/schedule:
+    get:
+      tags: [Schedule]
+      operationId: getSectionsSchedule
+      summary: Расписание спортивных секций
+      description: |
+        Возвращает сетку занятий секций за период. Идентификатор занятия
+        (sessionId) затем используется в POST /equipment/rent, чтобы
+        забронировать инвентарь к конкретной тренировке.
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          description: Начало периода (включительно)
+          schema:
+            type: string
+            format: date
+          example: "2026-10-26"
+        - name: dateTo
+          in: query
+          required: true
+          description: Конец периода (включительно), не более 14 дней от dateFrom
+          schema:
+            type: string
+            format: date
+          example: "2026-11-01"
+        - name: sectionType
+          in: query
+          required: false
+          description: Фильтр по виду секции
+          schema:
+            $ref: '#/components/schemas/SectionType'
+        - name: onlyAvailable
+          in: query
+          required: false
+          description: Только занятия со свободными местами
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Расписание успешно получено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionSchedule'
+              example:
+                dateFrom: "2026-10-26"
+                dateTo: "2026-11-01"
+                totalSessions: 1
+                sessions:
+                  - sessionId: "SES-2026-1026-01"
+                    sectionType: VOLLEYBALL
+                    title: "Волейбол (сборная института)"
+                    coachName: "Петров А.В."
+                    hall: "Игровой зал №1"
+                    startsAt: "2026-10-26T18:00:00+03:00"
+                    endsAt: "2026-10-26T19:30:00+03:00"
+                    capacity: 20
+                    freeSlots: 6
+                    equipmentAvailable: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /equipment/rent:
+    post:
+      tags: [Equipment]
+      operationId: rentEquipment
+      summary: Бронирование спортивного инвентаря
+      description: |
+        Создаёт бронь инвентаря к занятию из расписания (sessionId из
+        GET /sections/schedule). Шлюз проверяет остаток инвентаря на складе
+        спорткомплекса и лимит — не более 3 единиц одного вида на студента.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EquipmentRentRequest'
+            example:
+              studentId: "I14-23-9-010"
+              sessionId: "SES-2026-1026-01"
+              items:
+                - equipmentCode: "BALL-VOLLEY"
+                  quantity: 1
+                - equipmentCode: "KNEE-PADS"
+                  quantity: 2
+      responses:
+        '201':
+          description: Бронь создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentRentResponse'
+              example:
+                rentId: "RENT-000452"
+                sessionId: "SES-2026-1026-01"
+                status: CONFIRMED
+                pickupPoint: "Пункт выдачи инвентаря, 1 этаж"
+                returnDeadline: "2026-10-26T20:00:00+03:00"
+                items:
+                  - equipmentCode: "BALL-VOLLEY"
+                    quantity: 1
+                  - equipmentCode: "KNEE-PADS"
+                    quantity: 2
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Занятие с указанным sessionId не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Недостаточно инвентаря на складе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                code: EQUIPMENT_NOT_AVAILABLE
+                message: "Нет свободных наколенников (KNEE-PADS) на выбранное время"
+                traceId: "c0a8012e-7f31-4b4e-9d1a-2f6c0e9a1b77"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    BadRequest:
+      description: Ошибка валидации входных данных
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    Unauthorized:
+      description: Не передан или просрочен JWT-токен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+
+  schemas:
+    SectionType:
+      type: string
+      description: Вид спортивной секции / зоны
+      enum: [VOLLEYBALL, BASKETBALL, FOOTBALL, SWIMMING, GYM, TABLE_TENNIS]
+
+    SectionSession:
+      type: object
+      description: Одно занятие секции в расписании
+      required: [sessionId, sectionType, title, hall, startsAt, endsAt, capacity, freeSlots]
+      properties:
+        sessionId:
+          type: string
+          pattern: '^SES-\d{4}-\d{4}-\d{2}$'
+          example: "SES-2026-1026-01"
+        sectionType:
+          $ref: '#/components/schemas/SectionType'
+        title:
+          type: string
+          maxLength: 100
+        coachName:
+          type: string
+          maxLength: 80
+        hall:
+          type: string
+          maxLength: 60
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        capacity:
+          type: integer
+          minimum: 1
+          maximum: 200
+        freeSlots:
+          type: integer
+          minimum: 0
+        equipmentAvailable:
+          type: boolean
+          description: Можно ли забронировать инвентарь к занятию
+          default: true
+
+    SectionSchedule:
+      type: object
+      description: Сетка занятий за период
+      required: [dateFrom, dateTo, totalSessions, sessions]
+      properties:
+        dateFrom:
+          type: string
+          format: date
+        dateTo:
+          type: string
+          format: date
+        totalSessions:
+          type: integer
+          minimum: 0
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SectionSession'
+
+    RentItem:
+      type: object
+      required: [equipmentCode, quantity]
+      properties:
+        equipmentCode:
+          type: string
+          description: Код позиции инвентаря на складе
+          pattern: '^[A-Z]+(-[A-Z]+)*$'
+          example: "BALL-VOLLEY"
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 3
+
+    EquipmentRentRequest:
+      type: object
+      required: [studentId, sessionId, items]
+      properties:
+        studentId:
+          type: string
+          description: Номер студенческого билета
+          example: "I14-23-9-010"
+        sessionId:
+          type: string
+          description: Идентификатор занятия из GET /sections/schedule
+          pattern: '^SES-\d{4}-\d{4}-\d{2}$'
+        items:
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/RentItem'
+
+    RentStatus:
+      type: string
+      enum: [CONFIRMED, WAITING_LIST, CANCELLED]
+
+    EquipmentRentResponse:
+      type: object
+      required: [rentId, sessionId, status, items]
+      properties:
+        rentId:
+          type: string
+          example: "RENT-000452"
+        sessionId:
+          type: string
+        status:
+          $ref: '#/components/schemas/RentStatus'
+        pickupPoint:
+          type: string
+        returnDeadline:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RentItem'
+
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+        traceId:
+          type: string
+          format: uuid

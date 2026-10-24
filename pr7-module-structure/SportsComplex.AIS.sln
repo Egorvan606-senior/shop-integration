@@ -1,0 +1,77 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1B0C3A10-0001-4D2E-8F00-000000000001}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1B0C3A10-0002-4D2E-8F00-000000000002}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{1B0C3A10-0003-4D2E-8F00-000000000003}"
+	ProjectSection(SolutionItems) = preProject
+		docs\diagrams\components.puml = docs\diagrams\components.puml
+		docs\diagrams\c4-containers.puml = docs\diagrams\c4-containers.puml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsComplex.UI.Desktop", "src\SportsComplex.UI.Desktop\SportsComplex.UI.Desktop.csproj", "{4B00CAD1-0250-57BD-B7E3-827F487A39E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsComplex.Core.BusinessLogic", "src\SportsComplex.Core.BusinessLogic\SportsComplex.Core.BusinessLogic.csproj", "{2348116C-F7C7-5C47-BDA4-180C2DEF7165}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsComplex.Data.ApiClient", "src\SportsComplex.Data.ApiClient\SportsComplex.Data.ApiClient.csproj", "{CF7A7F71-4102-55A7-A617-DCE018F4C07C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsComplex.Security.Auth", "src\SportsComplex.Security.Auth\SportsComplex.Security.Auth.csproj", "{BB538617-5B0D-57CD-9E50-EAE5F7175A15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsComplex.Shared.Contracts", "src\SportsComplex.Shared.Contracts\SportsComplex.Shared.Contracts.csproj", "{AC84A2B9-D889-5E02-8C36-EE053502A226}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsComplex.Gateway.Api", "src\SportsComplex.Gateway.Api\SportsComplex.Gateway.Api.csproj", "{CC5E8BE0-89A7-5D86-BD3E-6E5D06C3E8B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsComplex.Core.Tests", "tests\SportsComplex.Core.Tests\SportsComplex.Core.Tests.csproj", "{8B8AEB86-9D10-582D-B7D7-32CED9615B22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B00CAD1-0250-57BD-B7E3-827F487A39E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B00CAD1-0250-57BD-B7E3-827F487A39E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B00CAD1-0250-57BD-B7E3-827F487A39E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B00CAD1-0250-57BD-B7E3-827F487A39E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2348116C-F7C7-5C47-BDA4-180C2DEF7165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2348116C-F7C7-5C47-BDA4-180C2DEF7165}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2348116C-F7C7-5C47-BDA4-180C2DEF7165}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2348116C-F7C7-5C47-BDA4-180C2DEF7165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7A7F71-4102-55A7-A617-DCE018F4C07C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7A7F71-4102-55A7-A617-DCE018F4C07C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7A7F71-4102-55A7-A617-DCE018F4C07C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7A7F71-4102-55A7-A617-DCE018F4C07C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB538617-5B0D-57CD-9E50-EAE5F7175A15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB538617-5B0D-57CD-9E50-EAE5F7175A15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB538617-5B0D-57CD-9E50-EAE5F7175A15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB538617-5B0D-57CD-9E50-EAE5F7175A15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC84A2B9-D889-5E02-8C36-EE053502A226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC84A2B9-D889-5E02-8C36-EE053502A226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC84A2B9-D889-5E02-8C36-EE053502A226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC84A2B9-D889-5E02-8C36-EE053502A226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC5E8BE0-89A7-5D86-BD3E-6E5D06C3E8B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC5E8BE0-89A7-5D86-BD3E-6E5D06C3E8B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC5E8BE0-89A7-5D86-BD3E-6E5D06C3E8B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC5E8BE0-89A7-5D86-BD3E-6E5D06C3E8B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B8AEB86-9D10-582D-B7D7-32CED9615B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B8AEB86-9D10-582D-B7D7-32CED9615B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B8AEB86-9D10-582D-B7D7-32CED9615B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B8AEB86-9D10-582D-B7D7-32CED9615B22}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4B00CAD1-0250-57BD-B7E3-827F487A39E3} = {1B0C3A10-0001-4D2E-8F00-000000000001}
+		{2348116C-F7C7-5C47-BDA4-180C2DEF7165} = {1B0C3A10-0001-4D2E-8F00-000000000001}
+		{CF7A7F71-4102-55A7-A617-DCE018F4C07C} = {1B0C3A10-0001-4D2E-8F00-000000000001}
+		{BB538617-5B0D-57CD-9E50-EAE5F7175A15} = {1B0C3A10-0001-4D2E-8F00-000000000001}
+		{AC84A2B9-D889-5E02-8C36-EE053502A226} = {1B0C3A10-0001-4D2E-8F00-000000000001}
+		{CC5E8BE0-89A7-5D86-BD3E-6E5D06C3E8B4} = {1B0C3A10-0001-4D2E-8F00-000000000001}
+		{8B8AEB86-9D10-582D-B7D7-32CED9615B22} = {1B0C3A10-0002-4D2E-8F00-000000000002}
+	EndGlobalSection
+EndGlobal

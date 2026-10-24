@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SportsComplex.Core.BusinessLogic\SportsComplex.Core.BusinessLogic.csproj" />
+    <ProjectReference Include="..\SportsComplex.Security.Auth\SportsComplex.Security.Auth.csproj" />
+    <ProjectReference Include="..\SportsComplex.Shared.Contracts\SportsComplex.Shared.Contracts.csproj" />
+  </ItemGroup>
+</Project>

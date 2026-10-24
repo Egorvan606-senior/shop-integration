@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SportsComplex.Core.BusinessLogic\SportsComplex.Core.BusinessLogic.csproj" />
+    <ProjectReference Include="..\SportsComplex.Data.ApiClient\SportsComplex.Data.ApiClient.csproj" />
+    <ProjectReference Include="..\SportsComplex.Security.Auth\SportsComplex.Security.Auth.csproj" />
+  </ItemGroup>
+</Project>

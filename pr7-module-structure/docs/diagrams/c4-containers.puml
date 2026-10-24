@@ -1,0 +1,58 @@
+@startuml c4-containers
+title C4 Model, Level 2 — Containers\nАИС «Спортивный комплекс и секции»
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam rectangle {
+  RoundCorner 18
+  FontColor white
+  StereotypeFontColor white
+  BorderColor #0B4884
+}
+skinparam rectangle<<person>> {
+  BackgroundColor #08427B
+  BorderColor #073B6F
+}
+skinparam rectangle<<container>> {
+  BackgroundColor #438DD5
+  BorderColor #3C7FC0
+}
+skinparam database<<container>> {
+  BackgroundColor #438DD5
+  BorderColor #3C7FC0
+  FontColor white
+  StereotypeFontColor white
+}
+skinparam rectangle<<external_system>> {
+  BackgroundColor #999999
+  BorderColor #8A8A8A
+}
+skinparam rectangle<<boundary>> {
+  BackgroundColor transparent
+  BorderColor #444444
+  BorderStyle dashed
+  FontColor #444444
+  StereotypeFontColor #444444
+}
+skinparam ArrowColor #666666
+skinparam ArrowFontColor #444444
+left to right direction
+
+rectangle "==Студент\n\nЗаписывается в секции,\nбронирует инвентарь" as student <<person>>
+rectangle "==Тренер\n\nВедёт занятия,\nсмотрит состав группы" as coach <<person>>
+
+rectangle "АИС «Спортивный комплекс и секции»" as ais <<boundary>> {
+  rectangle "==Клиентское приложение\n//[C# .NET 8, WinForms]//\n\nUI.Desktop + Core.BusinessLogic\n+ Data.ApiClient + Security.Auth" as desktop <<container>>
+  rectangle "==Интеграционный шлюз\n//[ASP.NET Core Web API]//\n\nGET /sections/schedule\nPOST /equipment/rent" as gateway <<container>>
+  database "==БД спорткомплекса\n//[PostgreSQL]//\n\nСекции, занятия,\nсклад инвентаря, брони" as db <<container>>
+}
+
+rectangle "==SSO вуза\n\nАутентификация,\nвыдача JWT" as sso <<external_system>>
+rectangle "==СКУД кампуса\n\nПроход в спорткомплекс\nпо пропуску" as skud <<external_system>>
+
+student --> desktop : Смотрит расписание,\nбронирует инвентарь
+coach --> desktop : Работает с группой
+desktop --> gateway : REST/JSON по openapi.yaml\n[HTTPS]
+desktop --> sso : Получает токен\n[OAuth 2.0]
+gateway --> db : Чтение/запись\n[SQL]
+gateway --> skud : Проверка допуска\n[REST]
+@enduml

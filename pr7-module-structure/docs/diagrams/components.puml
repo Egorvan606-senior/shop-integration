@@ -1,0 +1,79 @@
+@startuml components
+title АИС «Спортивный комплекс и секции» — UML Component Diagram\nмодули клиентского приложения и интеграционного шлюза (вариант 10)
+skinparam componentStyle uml2
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam ArrowColor #1F3B57
+skinparam component {
+  BackgroundColor #EAF2FB
+  BorderColor #1F3B57
+}
+skinparam package {
+  BorderColor #6B7A8A
+}
+
+actor "Студент /\nТренер" as user
+
+package "Клиентское приложение (Windows, .NET 8)" {
+  component UI [
+    <b>SportsComplex.UI.Desktop</b>
+    <<WinForms>>
+    --
+    ScheduleForm
+    Program (Composition Root)
+  ]
+  component Core [
+    <b>SportsComplex.Core.BusinessLogic</b>
+    --
+    ScheduleService, RentalService
+    RentalPolicy (правила аренды)
+    «порт» ISportsGatewayClient
+  ]
+  component Data [
+    <b>SportsComplex.Data.ApiClient</b>
+    --
+    SportsGatewayHttpClient
+    (адаптер HttpClient → REST)
+  ]
+  component Auth [
+    <b>SportsComplex.Security.Auth</b>
+    --
+    ITokenProvider, InMemoryTokenProvider
+    BearerTokenHandler
+  ]
+}
+
+component Contracts [
+  <b>SportsComplex.Shared.Contracts</b>
+  --
+  DTO (SectionSessionDto, RentItemDto …)
+  ApiRoutes
+]
+
+package "Сервер" {
+  component Gateway [
+    <b>SportsComplex.Gateway.Api</b>
+    <<ASP.NET Core Web API>>
+    --
+    GET  /v1/sections/schedule
+    POST /v1/equipment/rent
+  ]
+}
+
+database "БД спорткомплекса\n(секции, занятия,\nсклад инвентаря)" as DB
+cloud "SSO вуза\n(выдача JWT)" as SSO
+
+user --> UI : работает с\nинтерфейсом
+UI ..> Core : вызывает\nсервисы
+UI ..> Auth : вход,\nтокен
+UI ..> Data : собирает\nзависимости
+Data ..> Core : реализует\nISportsGatewayClient
+Data ..> Auth : Bearer-токен\nв заголовке
+Core ..> Contracts
+Data ..> Contracts
+Gateway ..> Contracts
+Data --> Gateway : HTTPS + JSON\n(контракт openapi.yaml)
+Gateway --> DB : SQL
+Auth --> SSO : OAuth 2.0
+@enduml
